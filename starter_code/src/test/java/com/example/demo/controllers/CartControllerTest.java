@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +69,36 @@ public class CartControllerTest
         assertNotNull(cart);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(BigDecimal.valueOf(100.00), cart.getTotal());
+    }
+
+    @Test
+    public void addToCartNullUserTest() {
+        when(userRepository.findByUsername("merlin")).thenReturn(null);
+
+        ModifyCartRequest request = new ModifyCartRequest();
+        request.setItemId(100L);
+        request.setQuantity(10);
+        request.setUsername("merlin");
+
+        ResponseEntity<Cart> response = cartController.addTocart(request);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void addToCartInvalidItemTest() {
+        when(itemRepository.findById(100L)).thenReturn(Optional.empty());
+
+        ModifyCartRequest request = new ModifyCartRequest();
+        request.setItemId(100L);
+        request.setQuantity(10);
+        request.setUsername("merlin");
+
+        ResponseEntity<Cart> response = cartController.addTocart(request);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test

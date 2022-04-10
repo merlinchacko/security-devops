@@ -38,11 +38,13 @@ public class CartController
         User user = userRepository.findByUsername(request.getUsername());
         if (user == null)
         {
+            log.info("User not found : " + request.getUsername());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Optional<Item> item = itemRepository.findById(request.getItemId());
         if (!item.isPresent())
         {
+            log.info("Item not found : " + request.getItemId());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Cart cart = user.getCart();
@@ -59,11 +61,13 @@ public class CartController
         User user = userRepository.findByUsername(request.getUsername());
         if (user == null)
         {
+            log.info("User not found : " + request.getUsername());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Optional<Item> item = itemRepository.findById(request.getItemId());
         if (!item.isPresent())
         {
+            log.info("Item not found : " + request.getItemId());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Cart cart = user.getCart();
